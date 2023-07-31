@@ -1,7 +1,7 @@
 import { Server as SocketIOServer } from "socket.io";
 import { Server } from "http";
 
-export default class SocketIOConfigurator {
+export class SocketIOConfigurator {
   private socketIo: SocketIOServer;
 
   constructor(server: Server) {

@@ -3,7 +3,7 @@ import { isValidObjectId } from "mongoose";
 
 import createChannel from "../../utils/createChannel";
 import { Message } from "../../models/Message/Message";
-import { IEmitters, TInputCreateMessage } from "./types";
+import { TInputCreateMessage } from "./types";
 
 class MessageController {
   async createMessage(req: Request, res: Response) {

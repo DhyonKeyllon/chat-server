@@ -1,7 +1,7 @@
 import { Application } from "express";
 import { createServer, Server } from "http";
 
-import SocketIOConfigurator from "./configs/Socket";
+import { SocketIOConfigurator } from "./configs/Socket";
 import { MongoDBConnector } from "./configs/Mongoose";
 import { ExpressServer } from "./configs/Express";
 

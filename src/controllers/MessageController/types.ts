@@ -1,4 +1,4 @@
-import { IMessage, TMessage } from "../../models/Message/types";
+import { IMessage } from "../../models/Message/types";
 
 export type TMessageData = Pick<IMessage, "channel" | "messages">;
 
