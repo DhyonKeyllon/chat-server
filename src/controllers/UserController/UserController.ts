@@ -23,13 +23,14 @@ class UserController {
       const { name, email, password } = req.body as TSignupInput;
 
       if (!name || !email || !password) {
-        return res.status(400).json({ error: "Missing required fields" });
+        res.status(400).json({ error: "Missing required fields" });
+        return;
       }
 
       const existingUser = await User.findOne({ email });
 
       if (existingUser) {
-        return res.status(400).json({ error: "E-mail already registered" });
+        res.status(400).json({ error: "E-mail already registered" });
       } else {
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -45,7 +46,7 @@ class UserController {
           expiresIn: "1d",
         });
 
-        return res.status(201).json({ user: { name, email, id: user._id }, token }) as Response<TUserDataResponse>;
+        res.status(201).json({ user: { name, email, id: user._id }, token }) as Response<TUserDataResponse>;
       }
     } catch (err) {
       console.error("Error creating user:", err);
@@ -58,19 +59,22 @@ class UserController {
       const { email: bodyEmail, password } = req.body as TSigninInput;
 
       if (!bodyEmail || !password) {
-        return res.status(400).json({ message: "Missing required fields" });
+        res.status(400).json({ message: "Missing required fields" });
+        return;
       }
 
       const user = await User.findOne({ email: bodyEmail }).select("+password");
 
       if (!user) {
-        return res.status(401).json({ message: "Authentication failed" });
+        res.status(401).json({ message: "Authentication failed" });
+        return;
       }
 
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        return res.status(401).json({ message: "Authentication failed" });
+        res.status(401).json({ message: "Authentication failed" });
+        return;
       }
 
       const { name, email, _id: id } = user;
@@ -79,7 +83,7 @@ class UserController {
         expiresIn: "30d",
       });
 
-      return res.json({
+      res.json({
         user: {
           name,
           email,
@@ -89,7 +93,7 @@ class UserController {
       }) as Response<TSignResponse>;
     } catch (err) {
       console.error("Error logging in:", err);
-      return res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
@@ -97,12 +101,10 @@ class UserController {
     try {
       const users = await User.find({});
 
-      return res.json({ users: users.map(({ _id, name, email }) => ({ id: _id, name, email })) }) as Response<
-        TGetUsersResponse[]
-      >;
+      res.json({ users: users.map(({ name, id }) => ({ name, id })) }) as Response<TGetUsersResponse[]>;
     } catch (err) {
       console.error("Error getting all users:", err);
-      return res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
@@ -111,7 +113,8 @@ class UserController {
       const { token } = req.params as TGetUserByTokenInput;
 
       if (!token) {
-        return res.status(400).json({ message: "Token not provided" });
+        res.status(400).json({ message: "Token not provided" });
+        return;
       }
 
       const { email: tokenMail } = jwt.verify(token as string, process.env.JWT_SECRET || "") as IUser;
@@ -119,7 +122,8 @@ class UserController {
       const user = await User.findOne({ email: tokenMail }, { password: 0 });
 
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        res.status(404).json({ message: "User not found" });
+        return;
       }
 
       const { name, id, email } = user;
@@ -138,14 +142,15 @@ class UserController {
       const user = await User.findById(id, { password: 0 });
 
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        res.status(404).json({ message: "User not found" });
+        return;
       }
 
       const { name, email } = user;
 
       return res.json({ user: { name, id, email } }) as Response<TUserDataResponse>;
     } catch (err) {
-      return res.status(500).json({ message: "Internal Server Error" });
+      res.status(500).json({ message: "Internal Server Error" });
     }
   }
 
@@ -155,7 +160,8 @@ class UserController {
 
       const user = await User.findById(id);
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        res.status(404).json({ message: "User not found" });
+        return;
       }
 
       user.name = name || user.name;
@@ -175,7 +181,8 @@ class UserController {
 
       const user = await User.findByIdAndDelete(userId);
       if (!user) {
-        return res.status(404).json({ message: "User not found" });
+        res.status(404).json({ message: "User not found" });
+        return;
       }
 
       res.json({ message: "User deleted successfully" });

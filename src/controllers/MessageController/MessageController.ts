@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { isValidObjectId } from "mongoose";
 
-import createChannel from "../../utils/createChannel";
-import { Message } from "../../models/Message/Message";
 import { TInputCreateMessage } from "./types";
+import { Message } from "../../models/Message/Message";
+
+import createChannel from "../../utils/createChannel";
 
 class MessageController {
   async createMessage(req: Request, res: Response) {

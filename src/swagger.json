@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Chat 55PBX Documentation",
+    "title": "Chat App Documentation",
     "description": "This API is used to manage the 55PBX chat system.",
     "version": "1.0.0"
   },

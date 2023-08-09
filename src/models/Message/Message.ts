@@ -1,4 +1,5 @@
-import { model, Schema, Document } from "mongoose";
+import { model, Schema } from "mongoose";
+
 import { IMessage } from "./types";
 
 const messageSchema = new Schema<IMessage>({
