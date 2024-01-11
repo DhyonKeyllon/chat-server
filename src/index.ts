@@ -1,7 +1,7 @@
 import { Error } from "mongoose";
 import { Request, Response } from "express";
 
-import App from "./app";
+import { App } from "./App";
 
 const server = new App();
 

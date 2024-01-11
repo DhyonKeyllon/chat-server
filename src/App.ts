@@ -35,10 +35,14 @@ class App {
   }
 
   public start() {
+    if (!process.env.JWT_SECRET) {
+      throw new Error("JWT is not defined");
+    }
+
     this.server.listen(this.PORT, () => {
       console.log(`Server listening on port ${this.PORT}`);
     });
   }
 }
 
-export default App;
+export { App };
