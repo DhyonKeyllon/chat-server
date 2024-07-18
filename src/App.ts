@@ -9,7 +9,7 @@ interface SocketService {
   configureSocket(): void;
 }
 
-interface MongoDBService {
+interface DatabaseService {
   connect(): void;
 }
 
@@ -18,7 +18,7 @@ class App {
   public app: Application;
   private server: Server;
   private socketService: SocketService;
-  private mongoDBService: MongoDBService;
+  private databaseService: DatabaseService;
 
   constructor() {
     this.PORT = process.env.PORT || "";
@@ -30,8 +30,8 @@ class App {
     this.socketService = new SocketIOConfigurator(this.server);
     this.socketService.configureSocket();
 
-    this.mongoDBService = new MongoDBConnector();
-    this.mongoDBService.connect();
+    this.databaseService = new MongoDBConnector();
+    this.databaseService.connect();
   }
 
   public start() {
